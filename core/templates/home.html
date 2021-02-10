@@ -1,0 +1,35 @@
+{% extends 'base_layout.html'%}
+
+{% block head %}
+<title>Home Page Kestrel</title>
+{% endblock %}
+   
+{% block content %}
+        <div class="container">
+            <div class="row mt-5 mb-5">
+                <div class="col-lg-12 text-center">
+                    <h1>Welcome to Kestrel</h1>
+                    <p>A Courier Service fast and cheap. What your clients needs.</p>
+                </div>
+                <div class="col-lg-6 mt-3">
+                    <div class="card" >
+                        <div class="card-body">
+                          <h5 class="card-title">CUSTOMER</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="/customer" class="btn btn-warning">Details</a>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-lg-6 mt-3">
+                    <div class="card" >
+                        <div class="card-body">
+                          <h5 class="card-title">COURIER</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="/courier" class="btn btn-warning">Details</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+        

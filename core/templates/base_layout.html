@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Kestrel</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery="full" %}
+        {% block head %} {% endblock %}
+    </head>
+    <body>
+        <!-- NAVBAR-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+            <a class="navbar-brand" href="/">Kestrel</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+               
+                <li class="nav-item">
+                  <a class="nav-link" href="/customer">Customer</a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="/courier">Courier</a>
+                </li>
+              </ul>              
+            </div>
+          </nav>
+
+          {% block content %} {% endblock %}
+        
+        <footer class="text-center mt-5 mb-5">&copy; Copyright Kestrel </footer>
+    </body>
+</html>
