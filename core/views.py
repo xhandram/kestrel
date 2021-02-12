@@ -19,7 +19,7 @@ def sign_up(request):
     form = forms.SignUpForm()
 
     if request.method == 'POST':
-        forms.SignUpForm(request.POST)
+        form = forms.SignUpForm(request.POST)
 
         if form.is_valid():
             email = form.cleaned_data.get('email').lower()
@@ -30,4 +30,6 @@ def sign_up(request):
             login(request,user)
             return redirect('/')
 
-    return render(request,'sign_up.html', { 'form': form })
+    return render(request,'sign_up.html', { 
+        'form': form 
+    })
