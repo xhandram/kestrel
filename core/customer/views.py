@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+
+from core.customer import forms
 
 
 # Create your views here.
@@ -8,4 +9,12 @@ from django.contrib.auth.decorators import login_required
 
 @login_required()
 def home(request):
-    return render(request,'home.html')
+    return rediret(reverse('customer:profile'))
+
+@login_required(login_url="/sign-in/?next=/customer/")
+def profile_page(request):
+    user_form = forms.BasicUserForm()
+
+    return render(request, 'customer/profile.html', {
+        "user_form": user_form
+    })

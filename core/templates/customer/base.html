@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container bg-light mt-4 pt-3 pb-3">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="text-center">
+                <img src="{% static 'images/avatar.png'%}" alt="" class="rounded-circle mb-2" width="100" height="100">
+                <h4>{{ request.user.get_full_name}}</h4>
+                <p class="text-secundary">{{ request.user.email }}</p>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item">Cras justo odio</li>
+                <li class="list-group-item">Dapibus ac facilisis in</li>
+                <li class="list-group-item">Morbi leo risus</li>
+                <li class="list-group-item">Porta ac consectetur ac</li>
+                <li class="list-group-item">Vestibulum at eros</li>
+              </ul>
+        </div>
+        </div>
+        <div class="col-lg-8">
+            {% block main %}
+            {% endblock %}               
+        </div>
+</div>
+
+{% endblock %}
