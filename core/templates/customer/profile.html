@@ -1,4 +1,31 @@
-{% extends 'customer/base.html' %} {% load bootstrap4 %} {% block main %}
+{% extends 'customer/base.html' %} 
+{% load bootstrap4 %} 
+
+{% block head %}
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBDBHQbZi3_LLVl5PKmHmfn54x6TNQgC1U",
+    authDomain: "kestrel-5f9c7.firebaseapp.com",
+    projectId: "kestrel-5f9c7",
+    storageBucket: "kestrel-5f9c7.appspot.com",
+    messagingSenderId: "339715699267",
+    appId: "1:339715699267:web:9bb2abe86c564d3d1c5af6"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+{% endblock %}
+
+
+{% block main %}
 <b class="text-secondary">Basic Information</b><br />
 <div class="card bg-white mt-2 mb-5">
   ´
@@ -7,9 +34,28 @@
       {% csrf_token %} 
       {% bootstrap_form user_form %} 
       {% bootstrap_form customer_form %}
+      
       <input type="hidden" name="action" value="update_profile" />
       <button type="submit" class="btn btn-warning">Save</button>
     </form>
   </div>
+
+  
+</div>
+
+<b class="text-secondary">Change Password</b><br />
+<div class="card bg-white mt-2 mb-5">
+  ´
+  <div class="card-body">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %} 
+      {% bootstrap_form password_form %}
+      
+      <input type="hidden" name="action" value="update_password" />
+      <button type="submit" class="btn btn-warning">Save</button>
+    </form>
+  </div>
+
+  
 </div>
 {% endblock%}
