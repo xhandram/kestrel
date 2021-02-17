@@ -1,3 +1,7 @@
+import stripe
+import firebase_admin
+
+from firebase_admin import credentials, auth
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -8,19 +12,19 @@ from django.conf import settings
 
 from django.contrib import messages
 
-#import firebase
-import firebase_admin
-from firebase_admin import credentials, auth
-
+#needed for firebase
 cred = credentials.Certificate(settings.FIREBASE_ADMIN_CREDENTIAL)
 firebase_admin.initialize_app(cred)
-# Create your views here.
 
+#needed for stripe
+stripe.api_key = settings.STRIPE_API_SECRET_KEY
 
+# Home View
 @login_required()
 def home(request):
     return redirect(reverse('customer:profile'))
 
+#Profile View
 @login_required(login_url="/sign-in/?next=/customer/")
 def profile_page(request):
     user_form = forms.BasicUserForm(instance=request.user)
@@ -60,3 +64,16 @@ def profile_page(request):
         "customer_form": customer_form,
         "password_form": password_form
     })
+
+# Payment View
+@login_required(login_url="/sign-in/?next=/customer/")
+def payment_method_page(request):
+    current_customer = request.user.customer
+
+    #save stripe customer info
+    if not current_customer.stripe_customer_id:
+        customer = stripe.Customer.create()
+        current_customer.stripe_customer_id = customer['id']
+        current_customer.save()
+        
+    return render(request, 'customer/payment_method.html')
