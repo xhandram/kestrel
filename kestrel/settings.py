@@ -151,3 +151,5 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Kestrel <no-reply@kestrelfastparcel.com>'
+
+FIREBASE_ADMIN_CREDENTIAL = os.path.join(BASE_DIR, "kestrel-5f9c7-firebase-adminsdk-2zkcj-f9091da033.json")

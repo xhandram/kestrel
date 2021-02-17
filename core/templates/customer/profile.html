@@ -62,14 +62,24 @@
 <b class="text-secondary">Phone Number</b><br />
 <div class="card bg-white mt-2 mb-5">
   <div class="card-body">
-    <div id="get-code" class="input-group mb-3">
+    <div id="recaptcha-container"></div>
+    <div id="get-code" class="input-group mb-3 {% if request.user.customer.phone_number%} d-none {% endif %}">
       <input type="text" class="form-control" placeholder="Your Phone Number" aria-label="Phone Number" aria-describedby="basic-addon2">
+      
       <div class="input-group-append">
         <button class="btn btn-warning" type="button">Send Code</button>
       </div>
     </div>
 
-    <div id="verify" class="input-group mb-3 d-none">
+    <div id="change-phone" class="input-group mb-3 {% if not request.user.customer.phone_number%} d-none {% endif %}">
+      <input type="text" class="form-control" aria-label="Phone Number" aria-describedby="basic-addon2" value="{{ request.user.customer.phone_number}}" disabled>
+      
+      <div class="input-group-append">
+        <button class="btn btn-warning" type="button">Change</button>
+      </div>
+    </div>
+
+    <div id="verify-code" class="input-group mb-3 d-none">
       <input type="text" class="form-control" placeholder="Verification code" aria-label="Verification Code" aria-describedby="basic-addon2">
       <div class="input-group-append">
         <button class="btn btn-warning" type="button">Verify Code</button>
@@ -80,7 +90,78 @@
 </div>
 
 <script>
-#("")
+
+// Setting the recaptcha  
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    'size':'invisible'
+  });
+
+//Function to generate dinamic form
+function onVerify(idToken) {
+  var form = document.createElement("form");
+  form.method = "POST"
+
+  var element1 = document.createElement("input");
+  element1.name = "id_token";
+  element1.value= idToken;
+  form.appendChild(element1);
+
+  var element2 = document.createElement("input");
+  element2.name = "action";
+  element2.value= "update_phone";
+  form.appendChild(element2);
+
+  var element3 = document.createElement("input");
+  element3.name = "csrfmiddlewaretoken";
+  element3.value= "{{ csrf_token }}";
+  form.appendChild(element3);
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+// Enviar un código de verificación al teléfono del usuario
+$("#get-code button").on('click', function(){
+  const phoneNumber = $("#get-code input").val();
+  console.log(phoneNumber);
+  
+  firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the user in with confirmationResult.confirm(code).
+      console.log(phoneNumber);
+      window.confirmationResult = confirmationResult;
+      $("#get-code").addClass('d-none');
+      $("#verify-code").removeClass('d-none');
+    }).catch((error) => {
+      // Error; SMS not sent
+      toast(error.message, 'error')
+    });
+});
+
+//Evento click para enviar código de verificación
+$("#verify-code").on('click', function(){
+  const code = $("#verify-code input").val();
+  
+  confirmationResult.confirm(code).then((result) => {
+    // User signed in successfully.
+    const user = result.user;
+    console.log(user.phoneNumber);
+    user.getIdToken().then(function(idToken) {
+      onVerify(idToken);
+  })
+}).catch((error) => {
+  // User couldn't sign in (bad verification code?)
+  toast(error.message, 'error')
+});
+  console.log(code);
+
+});
+
+// Change number
+$("#change-phone button").on("click", function(){
+  $("#change-phone").addClass('d-none');
+  $("#get-code").removeClass('d-none');
+});
 </script>
 
 {% endblock%}
